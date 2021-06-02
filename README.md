@@ -3,6 +3,7 @@
 - spring boot 
 - spring mvc
 - thymeleaf
+- mybatis
 - ...
 
 ## 使用
