@@ -1,6 +1,7 @@
 package com.github.community.controller;
 
 import com.github.community.entity.DiscussPost;
+import com.github.community.entity.Page;
 import com.github.community.entity.User;
 import com.github.community.service.DiscussPostService;
 import com.github.community.service.UserService;
@@ -24,9 +25,12 @@ public class IndexController {
     private UserService userService;
 
     @GetMapping("/index")
-    public String getIndex(Model model) {
+    public String getIndex(Model model, Page page) {
+        page.setRows(discussPostService.getDiscussPostCount(null));
+        page.setPath("/index");
+
         // 前十条数据显示到首页
-        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(null, 0, 10);
+        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(null, page.getOffset(), page.getLimit());
         List<Map<String, Object>> list = new ArrayList<>();
         if (discussPosts != null) {
             for (DiscussPost discussPost : discussPosts) {
@@ -38,6 +42,7 @@ public class IndexController {
             }
         }
         model.addAttribute("list", list);
+        model.addAttribute("page", page);
         return "/index";
     }
 }
