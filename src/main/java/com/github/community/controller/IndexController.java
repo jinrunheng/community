@@ -1,4 +1,43 @@
 package com.github.community.controller;
 
+import com.github.community.entity.DiscussPost;
+import com.github.community.entity.User;
+import com.github.community.service.DiscussPostService;
+import com.github.community.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Controller
 public class IndexController {
+
+    @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/index")
+    public String getIndex(Model model) {
+        // 前十条数据显示到首页
+        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(null, 0, 10);
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (discussPosts != null) {
+            for (DiscussPost discussPost : discussPosts) {
+                User user = userService.getUserById(discussPost.getUserId());
+                Map<String, Object> map = new HashMap<>();
+                map.put("discussPost", discussPost);
+                map.put("user", user);
+                list.add(map);
+            }
+        }
+        model.addAttribute("list", list);
+        return "/index";
+    }
 }
