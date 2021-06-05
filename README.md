@@ -4,7 +4,14 @@
 - spring mvc
 - thymeleaf
 - mybatis
+- logback 记录日志
 - ...
+
+## 模块
+
+- 首页（分页显示功能，十条）
+- 日志(logback.xml)
+- 
 
 ## 使用
 
