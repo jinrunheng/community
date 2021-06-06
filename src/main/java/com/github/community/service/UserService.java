@@ -1,6 +1,8 @@
 package com.github.community.service;
 
+import com.github.community.dao.LoginTicketDao;
 import com.github.community.dao.UserDao;
+import com.github.community.entity.LoginTicket;
 import com.github.community.entity.User;
 import com.github.community.util.Constant;
 import com.github.community.util.MailClient;
@@ -25,6 +27,9 @@ public class UserService implements Constant {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private LoginTicketDao loginTicketDao;
 
     @Autowired
     private MailClient mailClient;
@@ -120,4 +125,46 @@ public class UserService implements Constant {
         }
     }
 
+    public Map<String, Object> login(String username, String password, long expiredSeconds) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(username)) {
+            map.put("usernameMsg", "用户名不能为空！");
+        }
+        if (StringUtils.isBlank(password)) {
+            map.put("passwordMsg", "密码不能为空！");
+        }
+        // 验证账号
+        User user = userDao.findUserByName(username);
+        if (Objects.isNull(user)) {
+            map.put("usernameMsg", "该账号不存在!");
+            return map;
+        }
+        // 未激活
+        if (user.getStatus() == 0) {
+            map.put("usernameMsg", "该账号未激活！");
+            return map;
+        }
+
+        if (!user.getPassword().equals(MyUtil.md5(password + user.getSalt()))) {
+            map.put("passwordMsg", "密码不正确");
+            return map;
+        }
+
+        // 生成登陆凭证
+        LoginTicket loginTicket = LoginTicket.builder()
+                .userId(user.getId())
+                .ticket(MyUtil.generateUUID())
+                .status(0)
+                .expired(new Date(System.currentTimeMillis() + expiredSeconds * 1000))
+                .build();
+        loginTicketDao.insertLoginTicket(loginTicket);
+
+        map.put("ticket", loginTicket.getTicket());
+
+        return map;
+    }
+
+    public void logout(String ticket) {
+        loginTicketDao.updateStatus(ticket, 1);
+    }
 }
