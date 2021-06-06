@@ -5,13 +5,13 @@
 - thymeleaf
 - mybatis
 - logback 记录日志
-- spring email
+- spring mail
 - ...
 
 ## 模块
 
 - 首页（分页显示功能，十条）
-- 登陆模块
+- 注册登陆模块
    
 
 ## 使用
