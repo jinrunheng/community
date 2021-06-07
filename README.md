@@ -8,6 +8,7 @@
 - spring mail
 - kaptcha 验证码
 - AJAX
+- 拦截器
 - ...
 
 ## 模块
