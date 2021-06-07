@@ -3,6 +3,7 @@ package com.github.community.controller;
 import com.github.community.entity.User;
 import com.github.community.service.UserService;
 import com.github.community.util.Constant;
+import com.github.community.util.MyUtil;
 import com.google.code.kaptcha.Producer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -128,5 +126,61 @@ public class LoginController implements Constant {
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);
         return "redirect:/login";
+    }
+
+    @GetMapping("/forget")
+    public String getForgetPage() {
+        return "/site/forget";
+    }
+
+    /**
+     * @param email   用户邮箱
+     * @param session session 用来存储验证码 有效时间为 5min
+     * @return jsonString
+     * <p>
+     * success:
+     * {code:0}
+     * <p>
+     * failure:
+     * <p>
+     * {code:1,msg:用户邮箱不能为空}
+     * {code:1,msg:用户邮箱尚未注册}
+     */
+    @GetMapping("/forget/code")
+    @ResponseBody
+    public String getVerificationCode(String email, HttpSession session) {
+        if (StringUtils.isBlank(email)) {
+            return MyUtil.getJSONString(1, "用户邮箱不能为空");
+        }
+        User user = userService.getUserByEmail(email);
+        if (Objects.isNull(user)) {
+            return MyUtil.getJSONString(1, "用户邮箱尚未注册");
+        }
+        String code = userService.forgetPasswordAndSendEmail(email);
+        session.setAttribute("code", code);
+        session.setMaxInactiveInterval(5 * 60);
+        return MyUtil.getJSONString(0);
+    }
+
+    @PostMapping("/forget/reset")
+    public String resetPassword(String email, String verificationCode, String password, Model model, HttpSession session) {
+        String code = (String) session.getAttribute("code");
+        if (StringUtils.isBlank(verificationCode) ||
+                StringUtils.isBlank(code) ||
+                !code.equalsIgnoreCase(verificationCode)
+        ) {
+            model.addAttribute("codeMsg", "验证码错误");
+            return "/site/forget";
+        }
+        Map<String, Object> map = userService.resetPassword(email, password);
+        if (map.containsKey("user")) {
+            // update success
+            return "redirect:/login";
+        } else {
+            model.addAttribute("emailMsg", map.get("emailMsg"));
+            model.addAttribute("passwordMsg", map.get("passwordMsg"));
+            return "/site/forget";
+        }
+
     }
 }

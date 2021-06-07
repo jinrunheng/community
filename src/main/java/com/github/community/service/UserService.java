@@ -45,6 +45,10 @@ public class UserService implements Constant {
         return userDao.findUserByName(username);
     }
 
+    public User getUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
+    }
+
     /**
      * @param user
      * @return if no any problems,you will get a empty map
@@ -91,7 +95,7 @@ public class UserService implements Constant {
 
         // 注册用户
         user.setSalt(MyUtil.generateUUID().substring(0, 5));
-        user.setPassword(MyUtil.md5(user.getPassword()) + user.getSalt());
+        user.setPassword(MyUtil.md5(user.getPassword() + user.getSalt()));
         user.setType(0); // 普通用户
         user.setStatus(0); // 未激活
         user.setActivationCode(MyUtil.generateUUID());
@@ -166,5 +170,35 @@ public class UserService implements Constant {
 
     public void logout(String ticket) {
         loginTicketDao.updateStatus(ticket, 1);
+    }
+
+    public String forgetPasswordAndSendEmail(String email) {
+        Context context = new Context();
+        context.setVariable("email", email);
+        String code = MyUtil.generateUUID().substring(0, 6);
+        context.setVariable("code", code);
+        String content = templateEngine.process("/mail/forget", context);
+        mailClient.sendMail(email, "找回密码", content);
+        return code;
+    }
+
+    public Map<String, Object> resetPassword(String email, String password) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(email)) {
+            map.put("emailMsg", "邮箱不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(password)) {
+            map.put("passwordMsg", "密码不能为空");
+            return map;
+        }
+        User user = userDao.findUserByEmail(email);
+        if (Objects.isNull(user)) {
+            map.put("emailMsg", "邮箱尚未注册");
+            return map;
+        }
+        userDao.updateUserPassword(user.getId(), MyUtil.md5(password + user.getSalt()));
+        map.put("user", user);
+        return map;
     }
 }

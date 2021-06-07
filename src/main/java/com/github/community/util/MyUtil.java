@@ -1,8 +1,10 @@
 package com.github.community.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class MyUtil {
@@ -18,6 +20,19 @@ public class MyUtil {
             return null;
         }
         return DigestUtils.md5DigestAsHex(rawPassword.getBytes());
+    }
+
+    public static String getJSONString(int code, String msg) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        if (!Objects.isNull(msg)) {
+            jsonObject.put("msg", msg);
+        }
+        return jsonObject.toJSONString();
+    }
+
+    public static String getJSONString(int code) {
+        return getJSONString(code, null);
     }
 
 }
