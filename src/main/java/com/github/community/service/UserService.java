@@ -201,4 +201,8 @@ public class UserService implements Constant {
         map.put("user", user);
         return map;
     }
+
+    public LoginTicket getLoginTicket(String ticket) {
+        return loginTicketDao.findLoginTicketByTicket(ticket);
+    }
 }

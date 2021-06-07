@@ -7,6 +7,7 @@
 - logback 记录日志
 - spring mail
 - kaptcha 验证码
+- AJAX
 - ...
 
 ## 模块
