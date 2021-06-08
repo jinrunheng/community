@@ -35,4 +35,22 @@ public class MyUtil {
         return getJSONString(code, null);
     }
 
+    public static String getFileSuffix(String fileName) {
+        int i = fileName.lastIndexOf(".");
+        if (i == -1) {
+            return null;
+        }
+        return fileName.substring(i + 1);
+    }
+
+    public static boolean isImg(String suffix) {
+        if (suffix.equals("png")
+                || suffix.equals("jpg")
+                || suffix.equals("jpeg")
+        ) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -205,4 +205,8 @@ public class UserService implements Constant {
     public LoginTicket getLoginTicket(String ticket) {
         return loginTicketDao.findLoginTicketByTicket(ticket);
     }
+
+    public int updateUserHeader(Integer id, String headerUrl) {
+        return userDao.updateUserHeaderUrl(id, headerUrl);
+    }
 }
