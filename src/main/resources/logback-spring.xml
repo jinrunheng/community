@@ -2,8 +2,8 @@
 <configuration>
     <contextName>community</contextName>
     <!--on my mac : /Users/macbook/Desktop/myProject/log"-->
-    <!--on my windows : C:\Users\ASUS\Desktop\leetcode-daily\log-->
-    <property name="LOG_PATH" value="C:\Users\ASUS\Desktop\leetcode-daily\log"/>
+    <!--on my windows : C://Users//ASUS//Desktop//myProject//log-->
+    <property name="LOG_PATH" value="/Users/macbook/Desktop/myProject/log"/>
     <property name="APPDIR" value="community"/>
 
     <!-- error file -->

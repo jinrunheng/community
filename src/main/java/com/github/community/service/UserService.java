@@ -49,6 +49,25 @@ public class UserService implements Constant {
         return userDao.findUserByEmail(email);
     }
 
+    public Map<String, Object> updatePassword(Integer id, String originalPassword, String newPassword, String confirmPassword) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(originalPassword)) {
+            map.put("originalPasswordMsg", "原密码不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            map.put("newPasswordMsg", "新密码不能为空");
+            return map;
+        }
+        if (!Objects.equals(newPassword, confirmPassword)) {
+            map.put("confirmPasswordMsg", "两次输入密码不一致");
+            return map;
+        }
+        User user = userDao.findUserById(id);
+        userDao.updateUserPassword(id, MyUtil.md5(newPassword + user.getSalt()));
+        return map;
+    }
+
     /**
      * @param user
      * @return if no any problems,you will get a empty map

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -84,7 +85,7 @@ public class UserController {
     @GetMapping("/header/{fileName}")
     public void getUserAvatar(@PathVariable String fileName, HttpServletResponse response) {
         // 服务器图片的存放路径
-        String imgPathOnServer = uploadPath + "//" + fileName;
+        String imgPathOnServer = uploadPath + "/" + fileName;
         // 向浏览器输出图片
         String suffix = MyUtil.getFileSuffix(fileName);
         response.setContentType("image/" + suffix);
@@ -103,4 +104,20 @@ public class UserController {
             logger.error("读取头像失败" + e.getMessage());
         }
     }
+
+    @PostMapping("/update")
+    public String updatePassword(String originalPassword, String newPassword, String confirmPassword, Model model) {
+        User user = hostHolder.getUser();
+        Map<String, Object> map = userService.updatePassword(user.getId(), originalPassword, newPassword, confirmPassword);
+        if (map == null || map.isEmpty()) {
+            return "redirect:/logout";
+        }else {
+            model.addAttribute("originalPasswordMsg",map.get("originalPasswordMsg"));
+            model.addAttribute("newPasswordMsg",map.get("newPasswordMsg"));
+            model.addAttribute("confirmPasswordMsg",map.get("confirmPasswordMsg"));
+            return "/site/setting";
+        }
+
+    }
+
 }
