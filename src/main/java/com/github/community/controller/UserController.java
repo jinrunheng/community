@@ -1,5 +1,6 @@
 package com.github.community.controller;
 
+import com.github.community.annotation.LoginRequired;
 import com.github.community.entity.User;
 import com.github.community.service.UserService;
 import com.github.community.util.HostHolder;
@@ -45,6 +46,7 @@ public class UserController {
 
 
     @GetMapping("/setting")
+    @LoginRequired
     public String getUserSettingPage() {
         return "/site/setting";
     }
@@ -53,6 +55,7 @@ public class UserController {
     // 通过 MultipartFile 处理上传文件
     // 对上传的图片进行格式判断，如果不符合要求，则丢出 RuntimeException 异常
     // 对上传的图片进行重命名
+    @LoginRequired
     @PostMapping("/upload")
     public String upLoadUserAvatar(MultipartFile multipartFile, Model model) {
         if (multipartFile == null) {
@@ -105,16 +108,17 @@ public class UserController {
         }
     }
 
+    @LoginRequired
     @PostMapping("/update")
     public String updatePassword(String originalPassword, String newPassword, String confirmPassword, Model model) {
         User user = hostHolder.getUser();
         Map<String, Object> map = userService.updatePassword(user.getId(), originalPassword, newPassword, confirmPassword);
         if (map == null || map.isEmpty()) {
             return "redirect:/logout";
-        }else {
-            model.addAttribute("originalPasswordMsg",map.get("originalPasswordMsg"));
-            model.addAttribute("newPasswordMsg",map.get("newPasswordMsg"));
-            model.addAttribute("confirmPasswordMsg",map.get("confirmPasswordMsg"));
+        } else {
+            model.addAttribute("originalPasswordMsg", map.get("originalPasswordMsg"));
+            model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
+            model.addAttribute("confirmPasswordMsg", map.get("confirmPasswordMsg"));
             return "/site/setting";
         }
 
