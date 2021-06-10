@@ -14,4 +14,7 @@ public interface DiscussPostDao {
     // @Param 注解用于给参数取别名
     // 如果只有一个参数，并且在动态sql中(<if>)使用，则必须取一个别名
     int findDiscussPostCount(@Nullable @Param("userId") Integer userId);
+
+    // 发布帖子
+    int insertDiscussPost(DiscussPost discussPost);
 }

@@ -82,6 +82,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--自己开发的敏感词插件-->
+        <dependency>
+            <groupId>io.github.jinrunheng</groupId>
+            <artifactId>sensitive-words-filter</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
