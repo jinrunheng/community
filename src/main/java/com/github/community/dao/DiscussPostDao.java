@@ -17,4 +17,6 @@ public interface DiscussPostDao {
 
     // 发布帖子
     int insertDiscussPost(DiscussPost discussPost);
+
+    DiscussPost findDiscussPostById(Integer id);
 }

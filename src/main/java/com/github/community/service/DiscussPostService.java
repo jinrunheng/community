@@ -39,4 +39,8 @@ public class DiscussPostService {
         discussPost.setContent(trieFilter.filter(discussPost.getContent(), '*'));
         return discussPostDao.insertDiscussPost(discussPost);
     }
+
+    public DiscussPost getDiscussPostById(Integer id) {
+        return discussPostDao.findDiscussPostById(id);
+    }
 }

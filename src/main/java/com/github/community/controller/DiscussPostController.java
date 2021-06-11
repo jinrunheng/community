@@ -4,13 +4,13 @@ import com.github.community.annotation.LoginRequired;
 import com.github.community.entity.DiscussPost;
 import com.github.community.entity.User;
 import com.github.community.service.DiscussPostService;
+import com.github.community.service.UserService;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Objects;
@@ -24,6 +24,9 @@ public class DiscussPostController {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/add")
     @ResponseBody
@@ -48,4 +51,12 @@ public class DiscussPostController {
 
     }
 
+    @GetMapping("/detail/{discussPostId}")
+    public String getDiscussPost(@PathVariable Integer discussPostId, Model model) {
+        DiscussPost post = discussPostService.getDiscussPostById(discussPostId);
+        model.addAttribute("post", post);
+        User user = userService.getUserById(post.getUserId());
+        model.addAttribute("user", user);
+        return "/site/discuss-detail";
+    }
 }
