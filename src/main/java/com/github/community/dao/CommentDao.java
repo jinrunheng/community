@@ -8,7 +8,9 @@ import java.util.List;
 @Mapper
 public interface CommentDao {
 
-    List<Comment> findCommentsByEntityTypeAndId(Integer entityType, Integer entityId, int offset, int limit);
+    List<Comment> findCommentsByEntityTypeAndId(int entityType, int entityId, int offset, int limit);
 
-    int findCommentsCountByEntityTypeAndId(Integer entityType, Integer entityId);
+    int findCommentsCountByEntityTypeAndId(int entityType, int entityId);
+
+    int insertComment(Comment comment);
 }

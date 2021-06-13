@@ -19,4 +19,6 @@ public interface DiscussPostDao {
     int insertDiscussPost(DiscussPost discussPost);
 
     DiscussPost findDiscussPostById(Integer id);
+
+    int updateDiscussPostCommentCount(Integer id,int commentCount);
 }

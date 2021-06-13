@@ -43,4 +43,8 @@ public class DiscussPostService {
     public DiscussPost getDiscussPostById(Integer id) {
         return discussPostDao.findDiscussPostById(id);
     }
+
+    public int updateDiscussPostCommentCount(Integer id, int commentCount) {
+        return discussPostDao.updateDiscussPostCommentCount(id, commentCount);
+    }
 }

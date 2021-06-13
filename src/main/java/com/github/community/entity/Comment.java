@@ -24,11 +24,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class Comment {
 
-    private Integer id;
-    private Integer userId;
-    private Integer entityType;
-    private Integer entityId;
-    private Integer targetId;
+    private int id;
+    private int userId;
+    private int entityType;
+    private int entityId;
+    private int targetId;
     private String content;
     private int status;
     private Date createTime;
