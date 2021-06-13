@@ -26,4 +26,16 @@ public interface Constant {
      * 勾选 rememberMe 之后登陆凭证超时时间:100天
      */
     int REMEMBER_EXPIRED_SECONDS = 3600 * 12 * 100;
+
+    /**
+     * entityType
+     * entityType = 1 代表给帖子的评论
+     */
+    int ENTITY_TYPE_POST = 1;
+
+    /**
+     * entityType
+     * entityType = 2 代表给评论的评论
+     */
+    int ENTITY_TYPE_COMMENT = 2;
 }
