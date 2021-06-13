@@ -4,12 +4,12 @@
 - spring mvc
 - thymeleaf
 - mybatis
-- logback 记录日志
 - spring mail
 - kaptcha 验证码
 - AJAX
 - 拦截器
-- 使用前缀树这种数据结构，做出了敏感词过滤器，并上传到了 maven 仓库
+- 前缀树过滤敏感词
+- 事务
 - ...
 
 ## 模块
