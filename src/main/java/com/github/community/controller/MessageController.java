@@ -132,6 +132,7 @@ public class MessageController implements Constant {
         }
         message.setContent(content);
         message.setCreateTime(new Date());
+
         messageService.addMessage(message);
 
         return MyUtil.getJSONString(0);
