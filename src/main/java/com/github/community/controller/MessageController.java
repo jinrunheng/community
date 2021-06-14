@@ -5,20 +5,18 @@ import com.github.community.entity.Page;
 import com.github.community.entity.User;
 import com.github.community.service.MessageService;
 import com.github.community.service.UserService;
+import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
+import com.github.community.util.MyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
-public class MessageController {
+public class MessageController implements Constant {
 
     @Autowired
     private MessageService messageService;
@@ -77,8 +75,32 @@ public class MessageController {
         }
         model.addAttribute("letters", letters);
         model.addAttribute("target", getLetterTarget(conversationId));
+        // 设置已读
+        List<Integer> ids = getUnreadLetterIds(letterList);
+        if (!ids.isEmpty()) {
+            messageService.updateMessageStatusToRead(ids);
+        }
         return "/site/letter-detail";
 
+    }
+
+    /**
+     * 获取未读的消息的 id 列表
+     *
+     * @param letterList
+     * @return
+     */
+    private List<Integer> getUnreadLetterIds(List<Message> letterList) {
+        List<Integer> ids = new ArrayList<>();
+        if (letterList != null) {
+            for (Message message : letterList) {
+                // 如果当前登陆的用户是收件人，并且消息的状态为未读时
+                if (hostHolder.getUser().getId() == message.getToId() && message.getStatus() == MESSAGE_STATUS_UNREAD) {
+                    ids.add(message.getId());
+                }
+            }
+        }
+        return ids;
     }
 
     private User getLetterTarget(String conversationId) {
@@ -91,5 +113,27 @@ public class MessageController {
             return userService.getUserById(id_0);
         }
 
+    }
+
+    @ResponseBody
+    @PostMapping("/letter/send")
+    public String sendLetter(String toName, String content) {
+        User target = userService.getUserByName(toName);
+        if (target == null) {
+            return MyUtil.getJSONString(1, "目标用户不存在");
+        }
+        Message message = new Message();
+        message.setFromId(hostHolder.getUser().getId());
+        message.setToId(target.getId());
+        if (message.getFromId() < message.getToId()) {
+            message.setConversationId(message.getFromId() + "_" + message.getToId());
+        } else {
+            message.setConversationId(message.getToId() + "_" + message.getFromId());
+        }
+        message.setContent(content);
+        message.setCreateTime(new Date());
+        messageService.addMessage(message);
+
+        return MyUtil.getJSONString(0);
     }
 }

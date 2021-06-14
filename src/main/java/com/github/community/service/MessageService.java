@@ -46,6 +46,6 @@ public class MessageService implements Constant {
     }
 
     public int updateMessageStatusToRead(List<Integer> ids) {
-        return messageDao.updateStatus(ids,1);
+        return messageDao.updateStatus(ids, MESSAGE_STATUS_READ);
     }
 }
