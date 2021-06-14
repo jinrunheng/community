@@ -25,4 +25,9 @@ public interface MessageDao {
     // 一个是查询某个会话的未读私信数量
     int selectUnreadLetterCount(int userId, String conversationId);
 
+    // 新增一条私信
+    int insertMessage(Message message);
+
+    // 更新消息的状态
+    int updateStatus(List<Integer> ids, int status);
 }

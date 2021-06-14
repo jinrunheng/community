@@ -38,4 +38,16 @@ public interface Constant {
      * entityType = 2 代表给评论的评论
      */
     int ENTITY_TYPE_COMMENT = 2;
+
+    /**
+     * message status = 0
+     * 代表消息未读
+     */
+    int MESSAGE_STATUS_UNREAD = 0;
+
+    /**
+     * message status = 1
+     * 代表消息已读
+     */
+    int MESSAGE_STATUS_READ = 1;
 }
