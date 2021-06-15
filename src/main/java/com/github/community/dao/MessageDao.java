@@ -30,4 +30,6 @@ public interface MessageDao {
 
     // 更新消息的状态
     int updateStatus(List<Integer> ids, int status);
+
+    Message selectLetterById(int id);
 }

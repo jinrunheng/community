@@ -71,4 +71,10 @@
             #{id}
         </foreach>
     </update>
+    <select id="selectLetterById" resultType="com.github.community.entity.Message">
+        select
+        <include refid="select"/>
+        from message
+        where id = #{id}
+    </select>
 </mapper>

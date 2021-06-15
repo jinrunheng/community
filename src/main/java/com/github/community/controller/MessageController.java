@@ -137,4 +137,15 @@ public class MessageController implements Constant {
 
         return MyUtil.getJSONString(0);
     }
+
+    @PostMapping("/letter/delete")
+    @ResponseBody
+    public String deleteLetter(int id) {
+        Message letterById = messageService.findLetterById(id);
+        if (Objects.isNull(letterById)) {
+            return MyUtil.getJSONString(1, "没有找到该私信");
+        }
+        messageService.updateMessageStatusToDelete(id);
+        return MyUtil.getJSONString(0);
+    }
 }

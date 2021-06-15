@@ -50,4 +50,10 @@ public interface Constant {
      * 代表消息已读
      */
     int MESSAGE_STATUS_READ = 1;
+
+    /**
+     * message status = 2
+     * 代表消息已经被删除
+     */
+    int MESSAGE_STATUS_DELETE = 2;
 }

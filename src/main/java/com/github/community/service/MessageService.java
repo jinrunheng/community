@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +48,15 @@ public class MessageService implements Constant {
 
     public int updateMessageStatusToRead(List<Integer> ids) {
         return messageDao.updateStatus(ids, MESSAGE_STATUS_READ);
+    }
+
+    public int updateMessageStatusToDelete(int id) {
+        List<Integer> ids = new ArrayList<>();
+        ids.add(id);
+        return messageDao.updateStatus(ids, MESSAGE_STATUS_DELETE);
+    }
+
+    public Message findLetterById(int id) {
+        return messageDao.selectLetterById(id);
     }
 }
