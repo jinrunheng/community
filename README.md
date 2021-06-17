@@ -10,6 +10,8 @@
 - 拦截器
 - 前缀树过滤敏感词
 - 事务
+- Spring AOP
+- Redis
 - ...
 
 ## 模块
@@ -32,4 +34,12 @@ docker run --name my-mysql -e MYSQL_ROOT_PASSWORD=123 -e MYSQL_DATABASE=communit
 - Use flyway init table
 ```
 mvn flyway:clean flyway:migrate
+```
+
+- Use docker to start redis
+```
+docker run --name community-redis -p 6379:6379 -d redis
+```
+```
+docker exec -it 69719 redis-cli
 ```
