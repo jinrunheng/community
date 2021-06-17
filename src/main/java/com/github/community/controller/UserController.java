@@ -2,6 +2,7 @@ package com.github.community.controller;
 
 import com.github.community.annotation.LoginRequired;
 import com.github.community.entity.User;
+import com.github.community.service.LikeService;
 import com.github.community.service.UserService;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
@@ -44,6 +45,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LikeService likeService;
 
     @GetMapping("/setting")
     @LoginRequired
@@ -122,6 +125,21 @@ public class UserController {
             return "/site/setting";
         }
 
+    }
+
+    // 个人主页
+    @GetMapping("/profile/{userId}")
+    public String getProfilePage(@PathVariable Integer userId, Model model) {
+        User user = userService.getUserById(userId);
+        if (Objects.isNull(user)) {
+            throw new RuntimeException("用户不存在");
+        }
+        //用户
+        model.addAttribute("user", user);
+        //用户获得的点赞数量
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+        return "/site/profile";
     }
 
 }
