@@ -345,6 +345,11 @@ expire test:students 10 // 指定某个key存在的时间，这里面为指定 t
   - increment(key),decrement(key)
 - 开发个人主页
   - 以用户为key，查询点赞数量
+- 效果演示
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grlocemrn6j31f20u0781.jpg" alt="image-20210617232027005" style="zoom:50%;" align="left"/>
+
+
 
 #### 5. 关注，取消关注
 
