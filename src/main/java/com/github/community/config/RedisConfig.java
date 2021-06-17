@@ -11,17 +11,18 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
         // 设置 key 的序列化方式
-        redisTemplate.setKeySerializer(RedisSerializer.string());
+        template.setKeySerializer(RedisSerializer.string());
         // 设置 value 的序列化方式
-        redisTemplate.setValueSerializer(RedisSerializer.json());
-        // 设置 hash 的 key 的序列化方式
-        redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        // 设置 hash 的 value 的序列化方式
-        redisTemplate.setHashValueSerializer(RedisSerializer.json());
+        template.setValueSerializer(RedisSerializer.json());
+        // 设置 hash key 的序列化方式
+        template.setHashKeySerializer(RedisSerializer.string());
+        // 设置 hash value 的序列化方式
+        template.setHashValueSerializer(RedisSerializer.json());
 
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
+        template.afterPropertiesSet();
+        return template;
     }
 }

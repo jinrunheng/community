@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class MyUtil {
@@ -22,13 +24,23 @@ public class MyUtil {
         return DigestUtils.md5DigestAsHex(rawPassword.getBytes());
     }
 
-    public static String getJSONString(int code, String msg) {
+    public static String getJSONString(int code, String msg, Map<String, Object> map) {
         JSONObject jsonObject = new JSONObject();
+
+        if (!Objects.isNull(map)) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                jsonObject.put(entry.getKey(), entry.getValue());
+            }
+        }
         jsonObject.put("code", code);
         if (!Objects.isNull(msg)) {
             jsonObject.put("msg", msg);
         }
         return jsonObject.toJSONString();
+    }
+
+    public static String getJSONString(int code, String msg) {
+        return getJSONString(code, msg, null);
     }
 
     public static String getJSONString(int code) {

@@ -56,4 +56,15 @@ public interface Constant {
      * 代表消息已经被删除
      */
     int MESSAGE_STATUS_DELETE = 2;
+
+    /**
+     * like status yes 表示已经点赞
+     */
+    int LIKE_STATUS_YES = 1;
+
+    /**
+     * like status no 表示没有点赞
+     */
+    int LIKE_STATUS_NO = 0;
+
 }
