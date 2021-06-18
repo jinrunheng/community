@@ -157,6 +157,7 @@ public class UserController implements Constant {
         // 如果已关注 则显示 "已关注"
         boolean hasFollowed = false;
         if (hostHolder.getUser() != null) {
+            model.addAttribute("loginUser",hostHolder.getUser());
             hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
         }
         model.addAttribute("hasFollowed", hasFollowed);
