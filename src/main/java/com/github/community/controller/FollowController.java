@@ -93,8 +93,9 @@ public class FollowController implements Constant {
             for (Map<String, Object> map : list) {
                 User u = (User) map.get("user");
                 boolean isMutual = false;
-                // 判断当前登录用户关注的人有没有也关注他（互关）
+                // 是否互关
                 if (hostHolder.getUser() != null) {
+                    map.put("loginUser", hostHolder.getUser());
                     isMutual = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, u.getId());
                 }
                 map.put("isMutual", isMutual);
