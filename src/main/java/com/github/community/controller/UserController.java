@@ -2,10 +2,13 @@ package com.github.community.controller;
 
 import com.github.community.annotation.LoginRequired;
 import com.github.community.entity.User;
+import com.github.community.service.FollowService;
 import com.github.community.service.LikeService;
 import com.github.community.service.UserService;
+import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
+import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,7 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping(path = "/user")
-public class UserController {
+public class UserController implements Constant {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -47,6 +50,9 @@ public class UserController {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private FollowService followService;
 
     @GetMapping("/setting")
     @LoginRequired
@@ -139,6 +145,21 @@ public class UserController {
         //用户获得的点赞数量
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
+
+        // 该用户关注的用户数量
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+        // 该用户粉丝的数量
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+        // 当前登录用户是否关注了这个用户
+        // 如果没有关注 则显示 "关注他"
+        // 如果已关注 则显示 "已关注"
+        boolean hasFollowed = false;
+        if (hostHolder.getUser() != null) {
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
+        }
+        model.addAttribute("hasFollowed", hasFollowed);
         return "/site/profile";
     }
 
