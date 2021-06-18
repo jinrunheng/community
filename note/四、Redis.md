@@ -359,6 +359,17 @@ expire test:students 10 // 指定某个key存在的时间，这里面为指定 t
 - 关键
   - 如果A关注了B，那么A则是B的Follower,B则是A的Folowee
   - 关注的目标可以是用户，帖子，题目等等，在实现的时候将这些目标抽象为实体
+- 效果演示
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grms0zcd7lj31db0u077c.jpg" alt="image-20210618221324172" style="zoom:50%;" align="left"/>
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grms3apvldj31e30u0why.jpg" alt="image-20210618221538147" style="zoom:50%;" align="left"/>
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grms5gymv2j31e20u0tc7.jpg" alt="image-20210618221747403" style="zoom:50%;" align="left"/>
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grms6n2b43j31do0u0diw.jpg" alt="image-20210618221852050" style="zoom:50%;" align="left"/>
+
+
 
 #### 6. 关注列表，粉丝列表
 
