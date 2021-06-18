@@ -29,15 +29,21 @@ public interface Constant {
 
     /**
      * entityType
-     * entityType = 1 代表给帖子的评论
+     * entityType = 1 帖子
      */
     int ENTITY_TYPE_POST = 1;
 
     /**
      * entityType
-     * entityType = 2 代表给评论的评论
+     * entityType = 2 给评论的评论
      */
     int ENTITY_TYPE_COMMENT = 2;
+
+    /**
+     * entityType
+     * entityType = 3 用户
+     */
+    int ENTITY_TYPE_USER = 3;
 
     /**
      * message status = 0

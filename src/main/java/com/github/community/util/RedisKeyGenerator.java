@@ -16,4 +16,16 @@ public class RedisKeyGenerator {
         return "like:user:" + userId;
     }
 
+    // 获取某个用户关注的实体，关注的对象可能是用户，帖子等等
+    // followee:userId:entityType -> zset(entityId,now)
+    public static String getFolloweeKey(int userId, int entityType) {
+        return "followee:" + userId + ":" + entityType;
+    }
+
+    // 获取某个实体拥有的关注者
+    // follower:entityType:entityId -> zset(userId,now)
+    public static String getFollowerKey(int entityType, int entityId) {
+        return "follower:" + entityType + ":" + entityId;
+    }
+
 }
