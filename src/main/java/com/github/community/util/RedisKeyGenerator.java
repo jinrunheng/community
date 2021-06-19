@@ -28,4 +28,11 @@ public class RedisKeyGenerator {
         return "follower:" + entityType + ":" + entityId;
     }
 
+    // 将登陆验证码缓存到 redis 中
+    // 获取登陆验证码
+    // owner 是随机生成的字符串，缓存到cookie中
+    public static String getKaptchaKey(String owner) {
+        return "kaptcha:" + owner;
+    }
+
 }
