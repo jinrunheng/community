@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService implements Constant {
@@ -43,8 +44,14 @@ public class UserService implements Constant {
     private TemplateEngine templateEngine;
 
     public User getUserById(Integer id) {
-        return userDao.findUserById(id);
+//        return userDao.findUserById(id);
+        User user = getFromRedis(id);
+        if (user == null) {
+            user = initCache(id);
+        }
+        return user;
     }
+
 
     public User getUserByName(String username) {
         return userDao.findUserByName(username);
@@ -147,6 +154,7 @@ public class UserService implements Constant {
             return ACTIVATION_REPEAT;
         } else if (user.getActivationCode().equals(code)) {
             userDao.updateUserStatus(userId, 1);
+            clearCache(userId);
             return ACTIVATION_SUCCESS;
         } else {
             return ACTIVATION_FAILURE;
@@ -243,9 +251,32 @@ public class UserService implements Constant {
     }
 
     public int updateUserHeader(Integer id, String headerUrl) {
-        return userDao.updateUserHeaderUrl(id, headerUrl);
+        int rows = userDao.updateUserHeaderUrl(id, headerUrl);
+        clearCache(id);
+        return rows;
+
     }
 
 
-    //
+    // 1. 优先从缓存中取值
+    // 2. 如果取不到值，则初始化缓存数据
+    // 3. 数据变更时，清除缓存数据
+
+    private User getFromRedis(int userId) {
+        String redisKey = RedisKeyGenerator.getUserKey(userId);
+        return (User) redisTemplate.opsForValue().get(redisKey);
+    }
+
+    private User initCache(int userId) {
+        User user = userDao.findUserById(userId);
+        String redisKey = RedisKeyGenerator.getUserKey(userId);
+        redisTemplate.opsForValue().set(redisKey, user, 3600, TimeUnit.SECONDS);
+        return user;
+    }
+
+    private void clearCache(int userId) {
+        String redisKey = RedisKeyGenerator.getUserKey(userId);
+        redisTemplate.delete(redisKey);
+    }
+
 }

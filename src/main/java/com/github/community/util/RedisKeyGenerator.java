@@ -39,4 +39,9 @@ public class RedisKeyGenerator {
     public static String getTicketKey(String ticket) {
         return "ticket:" + ticket;
     }
+
+    // 获取用户
+    public static String getUserKey(int userId) {
+        return "user:" + userId;
+    }
 }
