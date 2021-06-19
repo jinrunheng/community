@@ -31,6 +31,10 @@ public class CommentService implements Constant {
         return commentDao.findCommentsByEntityTypeAndId(entityType, entityId, offset, limit);
     }
 
+    public List<Comment> getCommentsByEntityType(Integer entityType, int offset, int limit) {
+        return commentDao.findCommentsByEntityType(entityType, offset, limit);
+    }
+
     public int getCommentsCountByEntityTypeAndId(Integer entityType, Integer entityId) {
         return commentDao.findCommentsCountByEntityTypeAndId(entityType, entityId);
     }

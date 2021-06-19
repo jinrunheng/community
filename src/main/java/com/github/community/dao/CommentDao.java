@@ -13,4 +13,6 @@ public interface CommentDao {
     int findCommentsCountByEntityTypeAndId(int entityType, int entityId);
 
     int insertComment(Comment comment);
+
+    List<Comment> findCommentsByEntityType(int entityType, int offset, int limit);
 }

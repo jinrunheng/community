@@ -62,12 +62,12 @@ public class DiscussPostController implements Constant {
     }
 
     @GetMapping("/all/{userId}")
-    public String getAllDiscussPostByUserId(@PathVariable("userId") Integer userId, Page page, Model model) {
+    public String getAllDiscussPostsByUserId(@PathVariable("userId") Integer userId, Page page, Model model) {
         User user = userService.getUserById(userId);
         if (Objects.isNull(user)) {
             throw new RuntimeException("该用户不存在");
         }
-        model.addAttribute("user", user);
+        model.addAttribute("userId", userId);
         int discussPostCount = discussPostService.getDiscussPostCount(userId);
         model.addAttribute("count", discussPostCount);
 

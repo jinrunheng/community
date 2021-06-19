@@ -9,6 +9,7 @@ import java.util.Date;
  * <p>
  * entityType: 评论的类型；给用户的评论，给帖子的评论，给帖子下的回复的评论...
  * entityType = 1 代表给帖子的评论
+ * entityType = 2 代表给评论的评论
  * <p>
  * entityId:
  * 例如 entityType 为 帖子，entityId 为 228 代表的含义就是 给帖子Id为228的评论

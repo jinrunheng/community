@@ -19,6 +19,15 @@
         order by create_time asc
         limit #{offset},#{limit}
     </select>
+    <select id="findCommentsByEntityType" resultType="com.github.community.entity.Comment">
+        select
+        <include refid="select"/>
+        from comment
+        where status = 0 <!--status = 0 代表有效的评论-->
+        and entity_type = #{entityType}
+        order by create_time asc
+        limit #{offset},#{limit}
+    </select>
     <select id="findCommentsCountByEntityTypeAndId" resultType="int">
         select count(id)
         from comment
