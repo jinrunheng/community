@@ -42,12 +42,12 @@ public class CommentController implements Constant {
     @GetMapping("/all/{userId}")
     public String getAllCommentsByUserId(@PathVariable Integer userId, Page page, Model model) {
         page.setLimit(10);
-        int count = commentService.getCommentsCountByEntityTypeAndId(ENTITY_TYPE_USER, userId);
+        int count = commentService.getCommentsCountByUserId(userId);
         model.addAttribute("count", count);
         page.setRows(count);
         page.setPath("/comment/all/" + userId);
         model.addAttribute("userId", userId);
-        List<Comment> commentList = commentService.getCommentsByEntityTypeAndId(ENTITY_TYPE_USER, userId, page.getOffset(), page.getLimit());
+        List<Comment> commentList = commentService.getCommentsByUserId(userId, page.getOffset(), page.getLimit());
         List<Map<String, Object>> comments = new ArrayList<>();
         if (commentList != null) {
             for (Comment comment : commentList) {

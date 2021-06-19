@@ -19,15 +19,36 @@
         order by create_time asc
         limit #{offset},#{limit}
     </select>
-    <select id="findCommentsByEntityType" resultType="com.github.community.entity.Comment">
+    <select id="findCommentsByUserId" resultType="com.github.community.entity.Comment">
         select
         <include refid="select"/>
         from comment
-        where status = 0 <!--status = 0 代表有效的评论-->
-        and entity_type = #{entityType}
-        order by create_time asc
-        limit #{offset},#{limit}
+        where status != 1
+        and user_id = #{userId}
+        and entity_type = 1
+        and exists (
+        select id from discuss_post where id = comment.entity_id and status != 2
+        )
+        order by create_time desc
+        limit #{offset}, #{limit}
     </select>
+    <select id="findCommentsCountByUserId" resultType="int">
+        select count(id) from comment
+        where status != 1
+        and user_id = #{userId}
+        and entity_type = 1
+        and exists (
+            select id from discuss_post where id = comment.entity_id and status != 2
+        )
+    </select>
+
+    <select id="findCommentById" resultType="com.github.community.entity.Comment">
+        select
+        <include refid="select"/>
+        from comment
+        where id = #{id}
+    </select>
+
     <select id="findCommentsCountByEntityTypeAndId" resultType="int">
         select count(id)
         from comment

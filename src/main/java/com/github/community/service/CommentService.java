@@ -27,12 +27,20 @@ public class CommentService implements Constant {
     @Autowired
     private TrieFilter trieFilter;
 
+    public Comment getCommentById(int id) {
+        return commentDao.findCommentById(id);
+    }
+
     public List<Comment> getCommentsByEntityTypeAndId(Integer entityType, Integer entityId, int offset, int limit) {
         return commentDao.findCommentsByEntityTypeAndId(entityType, entityId, offset, limit);
     }
 
-    public List<Comment> getCommentsByEntityType(Integer entityType, int offset, int limit) {
-        return commentDao.findCommentsByEntityType(entityType, offset, limit);
+    public List<Comment> getCommentsByUserId(Integer userId, int offset, int limit) {
+        return commentDao.findCommentsByUserId(userId, offset, limit);
+    }
+
+    public int getCommentsCountByUserId(Integer userId) {
+        return commentDao.findCommentsCountByUserId(userId);
     }
 
     public int getCommentsCountByEntityTypeAndId(Integer entityType, Integer entityId) {
