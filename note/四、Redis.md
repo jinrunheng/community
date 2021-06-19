@@ -396,11 +396,25 @@ expire test:students 10 // 指定某个key存在的时间，这里面为指定 t
 
 #### 7. 我的帖子
 
-开发我的帖子功能，即在个人主页上，
+开发我的帖子功能，即在个人主页上，显示当前用户曾经发布过的帖子。
+
+效果演示：
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grnyssooskj30y10u0agp.jpg" alt="image-20210619225316826" style="zoom:50%;" align="left"/>
 
 
 
-#### 7. 使用Redis优化登录模块
+#### 8. 我的回复
+
+开发我的回复功能，即在个人主页上，显示当前用户曾经为帖子发布过的评论，**其中不包括为评论发布的评论**
+
+效果演示：
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grnytspky8j30ut0u0n34.jpg" alt="image-20210619225432464" style="zoom:50%;" align="left"/>
+
+
+
+#### 9. 使用Redis优化登录模块
 
 - 使用Redis存储验证码
   - 验证码需要频繁的访问与刷新，对性能要求较高
