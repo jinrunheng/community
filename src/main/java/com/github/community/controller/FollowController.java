@@ -93,6 +93,7 @@ public class FollowController implements Constant {
             for (Map<String, Object> map : list) {
                 User u = (User) map.get("user");
                 boolean isMutual = false;
+                map.put("loginUser", null);
                 // 是否互关
                 if (hostHolder.getUser() != null) {
                     map.put("loginUser", hostHolder.getUser());
