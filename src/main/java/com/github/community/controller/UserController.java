@@ -164,4 +164,8 @@ public class UserController implements Constant {
         return "/site/profile";
     }
 
+    // 获取该用户发布的所有帖子列表
+
+    // 获取该用户发布的所有回复列表
+
 }

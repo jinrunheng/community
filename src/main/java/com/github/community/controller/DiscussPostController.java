@@ -61,6 +61,38 @@ public class DiscussPostController implements Constant {
 
     }
 
+    @GetMapping("/all/{userId}")
+    public String getAllDiscussPostByUserId(@PathVariable("userId") Integer userId, Page page, Model model) {
+        User user = userService.getUserById(userId);
+        if (Objects.isNull(user)) {
+            throw new RuntimeException("该用户不存在");
+        }
+        model.addAttribute("user", user);
+        int discussPostCount = discussPostService.getDiscussPostCount(userId);
+        model.addAttribute("count", discussPostCount);
+
+        page.setLimit(5);
+        page.setPath("/discuss/all/" + userId);
+        page.setRows(discussPostCount);
+
+        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(userId, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> posts = new ArrayList<>();
+        if (!Objects.isNull(discussPosts)) {
+            for (DiscussPost discussPost : discussPosts) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("discussPostId", discussPost.getId());
+                map.put("title", discussPost.getTitle());
+                map.put("content", discussPost.getContent());
+                map.put("createTime", discussPost.getCreateTime());
+                long like = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPost.getId());
+                map.put("like", like);
+                posts.add(map);
+            }
+        }
+        model.addAttribute("posts", posts);
+        return "/site/my-post";
+    }
+
     @GetMapping("/detail/{discussPostId}")
     public String getDiscussPost(@PathVariable Integer discussPostId, Model model, Page page) {
         DiscussPost post = discussPostService.getDiscussPostById(discussPostId);

@@ -380,6 +380,18 @@ expire test:students 10 // 指定某个key存在的时间，这里面为指定 t
   - 处理“查询关注的人”，“查询粉丝”请求
   - 编写“查询关注的人”，“查询粉丝”模版
 
+- 效果演示
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grnpknvexaj31he0jijtg.jpg" alt="image-20210619173403188" style="zoom:50%;" align="left"/>
+
+未登录时获取的列表：
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grnpleq0nkj31hq0k4q50.jpg" alt="image-20210619173455461" style="zoom:50%;" align="left"/>
+
+登陆用户 aaa 后，获取的列表：
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grnpmzfkewj31hq0jmmzj.jpg" alt="image-20210619173627393" style="zoom:50%;" align="left"/>
+
 #### 7. 使用Redis优化登录模块
 
 - 使用Redis存储验证码
