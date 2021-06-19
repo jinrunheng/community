@@ -4,6 +4,7 @@ import com.github.community.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated // 已经不再推荐使用 LoginTicket 了
 public interface LoginTicketDao {
 
     @Insert({

@@ -7,9 +7,11 @@ import com.github.community.entity.User;
 import com.github.community.util.Constant;
 import com.github.community.util.MailClient;
 import com.github.community.util.MyUtil;
+import com.github.community.util.RedisKeyGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -29,7 +31,10 @@ public class UserService implements Constant {
     private UserDao userDao;
 
     @Autowired
-    private LoginTicketDao loginTicketDao;
+    private RedisTemplate redisTemplate;
+
+//    @Autowired
+//    private LoginTicketDao loginTicketDao;
 
     @Autowired
     private MailClient mailClient;
@@ -180,7 +185,10 @@ public class UserService implements Constant {
                 .status(0)
                 .expired(new Date(System.currentTimeMillis() + expiredSeconds * 1000))
                 .build();
-        loginTicketDao.insertLoginTicket(loginTicket);
+//        loginTicketDao.insertLoginTicket(loginTicket);
+
+        String redisKey = RedisKeyGenerator.getTicketKey(loginTicket.getTicket());
+        redisTemplate.opsForValue().set(redisKey, loginTicket);
 
         map.put("ticket", loginTicket.getTicket());
 
@@ -188,7 +196,12 @@ public class UserService implements Constant {
     }
 
     public void logout(String ticket) {
-        loginTicketDao.updateStatus(ticket, 1);
+
+//        loginTicketDao.updateStatus(ticket, 1);
+        String redisKey = RedisKeyGenerator.getTicketKey(ticket);
+        LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+        loginTicket.setStatus(1);
+        redisTemplate.opsForValue().set(redisKey, loginTicket);
     }
 
     public String forgetPasswordAndSendEmail(String email) {
@@ -222,10 +235,17 @@ public class UserService implements Constant {
     }
 
     public LoginTicket getLoginTicket(String ticket) {
-        return loginTicketDao.findLoginTicketByTicket(ticket);
+
+//        return loginTicketDao.findLoginTicketByTicket(ticket);
+        String redisKey = RedisKeyGenerator.getTicketKey(ticket);
+        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+
     }
 
     public int updateUserHeader(Integer id, String headerUrl) {
         return userDao.updateUserHeaderUrl(id, headerUrl);
     }
+
+
+    //
 }

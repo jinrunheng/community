@@ -35,4 +35,8 @@ public class RedisKeyGenerator {
         return "kaptcha:" + owner;
     }
 
+    // 获取登陆凭证
+    public static String getTicketKey(String ticket) {
+        return "ticket:" + ticket;
+    }
 }
