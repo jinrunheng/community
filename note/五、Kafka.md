@@ -284,6 +284,8 @@ class KafkaConsumer {
 
 #### 4. 发送系统通知
 
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grpnnm9ompj31c00nsgpu.jpg" alt="image-20210621095900197" style="zoom:50%;" align="left"/>
+
 - 触发事件
   - 评论后，发布通知
   - 点赞后，发布通知

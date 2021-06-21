@@ -2,7 +2,9 @@ package com.github.community.controller;
 
 import com.github.community.entity.Comment;
 import com.github.community.entity.DiscussPost;
+import com.github.community.entity.Event;
 import com.github.community.entity.Page;
+import com.github.community.kafka.EventProducer;
 import com.github.community.service.CommentService;
 import com.github.community.service.DiscussPostService;
 import com.github.community.util.Constant;
@@ -30,12 +32,32 @@ public class CommentController implements Constant {
     @Autowired
     private DiscussPostService discussPostService;
 
+    @Autowired
+    private EventProducer producer;
+
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable int discussPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());
         comment.setStatus(0);
         comment.setCreateTime(new Date());
         commentService.addComment(comment);
+
+        // 触发评论事件
+        Event event = new Event()
+                .setTopic(TOPIC_COMMENT)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(comment.getEntityType())
+                .setEntityId(comment.getEntityId())
+                .setData("postId",discussPostId);
+
+        if(comment.getEntityType() == ENTITY_TYPE_POST){
+            DiscussPost target = discussPostService.getDiscussPostById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
+            Comment target = commentService.getCommentById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }
+        producer.fireEvent(event);
         return "redirect:/discuss/detail/" + discussPostId;
     }
 

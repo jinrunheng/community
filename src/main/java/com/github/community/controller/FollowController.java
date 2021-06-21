@@ -1,8 +1,10 @@
 package com.github.community.controller;
 
 import com.github.community.annotation.LoginRequired;
+import com.github.community.entity.Event;
 import com.github.community.entity.Page;
 import com.github.community.entity.User;
+import com.github.community.kafka.EventProducer;
 import com.github.community.service.FollowService;
 import com.github.community.service.UserService;
 import com.github.community.util.Constant;
@@ -32,6 +34,9 @@ public class FollowController implements Constant {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer producer;
+
     // 关注
     // ajax
     @PostMapping("/follow")
@@ -40,6 +45,16 @@ public class FollowController implements Constant {
     public String follow(int entityType, int entityId) {
         User user = hostHolder.getUser();
         followService.follow(user.getId(), entityType, entityId);
+
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(user.getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        producer.fireEvent(event);
+
         return MyUtil.getJSONString(0, "已关注");
     }
 
