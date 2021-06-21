@@ -32,4 +32,16 @@ public interface MessageDao {
     int updateStatus(List<Integer> ids, int status);
 
     Message selectLetterById(int id);
+
+    // 查询某个主题下最新的通知
+    Message selectLatestNoticeByTopic(int userId,String topic);
+    // 查询某个主题所包含的通知数量
+    int selectNoticeCountByTopic(int userId,String topic);
+    // 查询未读的通知数量
+    // 如果传入 topic，就查询某个主题的未读通知数量
+    // 如果 topic 为 null，就查询所有的主题的未读通知数量
+    int selectUnreadNoticeCount(int userId,String topic);
+
+    // 查询某个主题所包含的通知列表
+    List<Message> selectNoticeListByTopic(int userId,String topic,int offset,int limit);
 }

@@ -59,4 +59,25 @@ public class MessageService implements Constant {
     public Message findLetterById(int id) {
         return messageDao.selectLetterById(id);
     }
+
+    // 获取某个主题下最新的通知
+    public Message findLatestNoticeByTopic(int userId,String topic){
+        return messageDao.selectLatestNoticeByTopic(userId,topic);
+    }
+
+    // 获取某个主题所包含的通知数量
+    public int findNoticeCountByTopic(int userId,String topic){
+        return messageDao.selectNoticeCountByTopic(userId,topic);
+    }
+
+    // 查询未读的通知数量
+    // 如果传入 topic，就查询某个主题的未读通知数量
+    // 如果 topic 为 null，就查询所有的主题的未读通知数量
+    public int findUnreadNoticeCount(int userId,String topic){
+        return messageDao.selectUnreadNoticeCount(userId,topic);
+    }
+
+    public List<Message> findNoticeListByTopic(int userId,String topic,int offset,int limit){
+        return messageDao.selectNoticeListByTopic(userId,topic,offset,limit);
+    }
 }

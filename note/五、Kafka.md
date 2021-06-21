@@ -298,13 +298,24 @@ class KafkaConsumer {
 #### 5. 显示系统通知
 
 - 通知列表
-  - 显示评论，点赞，关注三种类型的通知
+  
+  - 显示评论，点赞，关注三种类型的通知<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grq3cj70o2j31hi0qsjv4.jpg" alt="image-20210621190142401" style="zoom:50%;" align="left"/>
+  
+    
 - 通知详情
+  
   - 分页显示某一类主题所包含的通知
+  
+    <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grq8vmf4bbj30xo0u0tfr.jpg" alt="image-20210621221314829" style="zoom:50%;" align="left"/>
+  
+    <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grq8w6qwb4j30wn0u00zq.jpg" alt="image-20210621221347966" style="zoom:50%;" align="left"/>
+  
+    <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grq8wt2ppgj30wk0u0agq.jpg" alt="image-20210621221423417" style="zoom:50%;" align="left"/>
 - 未读消息
+  
   - 在页面头部显示所有的未读消息数量
-
-
+  
+    <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grq8unowgaj31hs0pkgq4.jpg" alt="image-20210621221148128" style="zoom:50%;" align="left"/>
 
 
 
