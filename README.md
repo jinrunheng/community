@@ -12,6 +12,7 @@
 - 事务
 - Spring AOP
 - Redis
+- Kafka
 - ...
 
 ## 模块
@@ -43,3 +44,15 @@ docker run --name community-redis -p 6379:6379 -d redis
 ```
 docker exec -it 69719 redis-cli
 ```
+- start Zookeeper & kafka service
+
+```
+cd ~/Downloads/kafka_2.13-2.6.0/bin
+sh zookeeper-server-start.sh ../config/zookeeper.properties
+```
+```
+#!/bin/sh
+cd ~/Downloads/kafka_2.13-2.6.0/bin
+sh kafka-server-start.sh ../config/server.properties
+```
+You should make sure to start zookeeper service first and then Kafka service; Close Kafka service first, then close zookeeper service
