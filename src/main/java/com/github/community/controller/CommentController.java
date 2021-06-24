@@ -9,6 +9,7 @@ import com.github.community.service.CommentService;
 import com.github.community.service.DiscussPostService;
 import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
+import org.apache.kafka.common.config.TopicConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,16 +49,24 @@ public class CommentController implements Constant {
                 .setUserId(hostHolder.getUser().getId())
                 .setEntityType(comment.getEntityType())
                 .setEntityId(comment.getEntityId())
-                .setData("postId",discussPostId);
+                .setData("postId", discussPostId);
 
-        if(comment.getEntityType() == ENTITY_TYPE_POST){
+        if (comment.getEntityType() == ENTITY_TYPE_POST) {
             DiscussPost target = discussPostService.getDiscussPostById(comment.getEntityId());
             event.setEntityUserId(target.getUserId());
-        }else if (comment.getEntityType() == ENTITY_TYPE_COMMENT){
+        } else if (comment.getEntityType() == ENTITY_TYPE_COMMENT) {
             Comment target = commentService.getCommentById(comment.getEntityId());
             event.setEntityUserId(target.getUserId());
         }
         producer.fireEvent(event);
+        if (comment.getEntityType() == ENTITY_TYPE_POST) {
+            event = new Event()
+                    .setTopic(TOPIC_PUBLISH)
+                    .setUserId(hostHolder.getUser().getId())
+                    .setEntityType(ENTITY_TYPE_POST)
+                    .setEntityId(discussPostId);
+            producer.fireEvent(event);
+        }
         return "redirect:/discuss/detail/" + discussPostId;
     }
 

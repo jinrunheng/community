@@ -46,4 +46,9 @@
         update discuss_post set comment_count = #{commentCount}
         where id = #{id}
     </update>
+    <select id="findAll" resultType="com.github.community.entity.DiscussPost">
+        select
+        <include refid="select"/>
+        from discuss_post
+    </select>
 </mapper>

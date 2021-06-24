@@ -21,4 +21,6 @@ public interface DiscussPostDao {
     DiscussPost findDiscussPostById(Integer id);
 
     int updateDiscussPostCommentCount(Integer id,int commentCount);
+
+    List<DiscussPost> findAll();
 }

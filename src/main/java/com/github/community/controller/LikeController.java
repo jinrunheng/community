@@ -1,5 +1,6 @@
 package com.github.community.controller;
 
+import com.github.community.annotation.LoginRequired;
 import com.github.community.entity.Event;
 import com.github.community.entity.User;
 import com.github.community.kafka.EventProducer;
@@ -30,6 +31,7 @@ public class LikeController implements Constant {
 
     @PostMapping("/like")
     @ResponseBody
+    @LoginRequired
     public String like(int entityType, int entityId, int entityUserId,int postId) {
         User user = hostHolder.getUser();
         //  点赞

@@ -1,10 +1,8 @@
 package com.github.community.controller;
 
 import com.github.community.annotation.LoginRequired;
-import com.github.community.entity.Comment;
-import com.github.community.entity.DiscussPost;
-import com.github.community.entity.Page;
-import com.github.community.entity.User;
+import com.github.community.entity.*;
+import com.github.community.kafka.EventProducer;
 import com.github.community.service.CommentService;
 import com.github.community.service.DiscussPostService;
 import com.github.community.service.LikeService;
@@ -38,6 +36,9 @@ public class DiscussPostController implements Constant {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private EventProducer producer;
+
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -57,6 +58,14 @@ public class DiscussPostController implements Constant {
                 .build();
 
         discussPostService.addDiscussPost(post);
+
+        // 触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        producer.fireEvent(event);
         return MyUtil.getJSONString(0, "发布成功");
 
     }

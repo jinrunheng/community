@@ -89,6 +89,11 @@ public interface Constant {
     String TOPIC_FOLLOW = "follow";
 
     /**
+     * 主题：发帖
+     */
+    String TOPIC_PUBLISH = "publish";
+
+    /**
      * 系统用户的 ID
      */
     int SYSTEM_USER_ID = 1;

@@ -78,7 +78,9 @@
       }
       ```
 
-#### 2. 
+#### 2. Spring Boot 整合 Elasticsearch
+
+详细代码请参考：https://github.com/jinrunheng/low-version-springboot-elasticsearch-demo
 
 
 #### 3. 开发社区搜索功能
@@ -93,3 +95,8 @@
     - 在 consumer 中 增加一个方法，消费帖子发布事件
 - 显示结果
     - 在控制器中处理搜索请求，在 HTML 上显示搜索结果  
+
+- 效果演示：
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1grtsyt3p41j30uq0u0gxw.jpg" alt="image-20210625000441757" style="zoom:50%;" align="left"/>
+
