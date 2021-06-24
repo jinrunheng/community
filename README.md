@@ -55,3 +55,7 @@ cd ~/Downloads/kafka_2.13-2.6.0/bin
 sh kafka-server-start.sh ../config/server.properties
 ```
 You should make sure to start zookeeper service first and then Kafka service; Close Kafka service first, then close zookeeper service
+
+- start elasticsearch(6.4.3)
+
+

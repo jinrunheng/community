@@ -30,7 +30,7 @@
         </if>
     </select>
 
-    <insert id="insertDiscussPost" parameterType="com.github.community.entity.DiscussPost">
+    <insert id="insertDiscussPost" parameterType="com.github.community.entity.DiscussPost" keyProperty="id">
         insert into discuss_post
         (<include refid="insert"/>)
         values

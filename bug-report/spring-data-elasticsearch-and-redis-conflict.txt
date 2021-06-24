@@ -1,0 +1,7 @@
+SpringBoot整合ElasticSearch与Redis报错
+
+原因分析：程序的其他地方使用了Netty，这里指redis。这影响在实例化传输客户端之前初始化处理器的数量。 实例化传输客户端时，我们尝试初始化处理器的数量。
+由于在其他地方使用Netty，因此已经初始化并且Netty会对此进行防范，因此首次实例化会因看到的非法状态异常而失败。
+解决方案：
+
+System.setProperty("es.set.netty.runtime.available.processors", "false");
