@@ -38,6 +38,10 @@ public class CommentController implements Constant {
 
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable int discussPostId, Comment comment) {
+        if(hostHolder.getUser() == null){
+            // 如果当前用户没有登陆，跳转到登陆页面
+            return "redirect:/login";
+        }
         comment.setUserId(hostHolder.getUser().getId());
         comment.setStatus(0);
         comment.setCreateTime(new Date());
