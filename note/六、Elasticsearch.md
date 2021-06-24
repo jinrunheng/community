@@ -81,4 +81,15 @@
 #### 2. 
 
 
+#### 3. 开发社区搜索功能
 
+- 搜索服务
+    - 将帖子保存至 Elasticsearch 服务器
+    - 从 Elasticsearch 服务器删除帖子
+    - 从 Elasticsearch 服务器搜索帖子
+- 发布事件
+    - 发布帖子时，将帖子异步提交到 Elasticsearch 服务器
+    - 增加评论时，将帖子异步提交到 Elasticsearch 服务器
+    - 在 consumer 中 增加一个方法，消费帖子发布事件
+- 显示结果
+    - 在控制器中处理搜索请求，在 HTML 上显示搜索结果  
