@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -279,4 +280,20 @@ public class UserService implements Constant {
         redisTemplate.delete(redisKey);
     }
 
+    // Override UserDetails
+    public Collection<? extends GrantedAuthority> getAuthorities(int userId) {
+        User user = getUserById(userId);
+
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add((GrantedAuthority) () -> {
+            if (user.getType() == 1) {
+                return AUTHORITY_ADMIN;
+            } else if (user.getType() == 2) {
+                return AUTHORITY_MODERATOR;
+            } else {
+                return AUTHORITY_USER;
+            }
+        });
+        return list;
+    }
 }

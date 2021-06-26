@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,5 +57,10 @@ public class IndexController implements Constant {
     @GetMapping("/error")
     public String getErrorPage() {
         return "/error/500";
+    }
+
+    @GetMapping("/denied")
+    public String getDeniedPage() {
+        return "/error/404";
     }
 }

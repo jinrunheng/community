@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--访问该页面时，在此处生成 CSRF 令牌-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}">-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+
     <link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           crossorigin="anonymous">
@@ -57,7 +62,8 @@
                     </ul>
                     <!-- 搜索 -->
                     <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/search}">
-                        <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}"/>
+                        <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword"
+                               th:value="${keyword}"/>
                         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
                     </form>
                 </div>
