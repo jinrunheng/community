@@ -33,7 +33,7 @@ public class EventConsumer implements Constant {
     @Autowired
     private MessageService messageService;
 
-    // 发帖事件
+    // 发帖,更新帖子事件
     @KafkaListener(topics = {TOPIC_PUBLISH})
     public void handlePublishMessage(ConsumerRecord record) {
         if (record == null || record.value() == null) {
