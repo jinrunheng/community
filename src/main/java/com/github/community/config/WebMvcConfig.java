@@ -1,5 +1,6 @@
 package com.github.community.config;
 
+import com.github.community.controller.interceptor.DataInterceptor;
 import com.github.community.controller.interceptor.LoginRequiredInterceptor;
 import com.github.community.controller.interceptor.LoginTicketInterceptor;
 import com.github.community.controller.interceptor.MessageInterceptor;
@@ -18,6 +19,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //    private LoginRequiredInterceptor loginRequiredInterceptor;
 
     @Autowired
+    private DataInterceptor dataInterceptor;
+
+    @Autowired
     private MessageInterceptor messageInterceptor;
 
     @Override
@@ -29,6 +33,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
 
         registry.addInterceptor(messageInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
+
+        registry.addInterceptor(dataInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
     }
 }

@@ -1,11 +1,13 @@
 ## 基于 Spring Boot 开发的牛课网社区首页
 使用技术栈
-- spring boot 
-- spring mvc
-- thymeleaf
-- mybatis
-- spring mail
-- kaptcha 验证码
+- Spring boot 
+- Spring MVC
+- MySQL
+- Flyway
+- Thymeleaf
+- Mybatis
+- Spring mail
+- Kaptcha 验证码
 - AJAX
 - 拦截器
 - 前缀树过滤敏感词
@@ -13,6 +15,8 @@
 - Spring AOP
 - Redis
 - Kafka
+- Elasticsearch
+- Spring Security(授权认证)
 - ...
 
 ## 模块

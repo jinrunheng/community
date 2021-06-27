@@ -44,4 +44,24 @@ public class RedisKeyGenerator {
     public static String getUserKey(int userId) {
         return "user:" + userId;
     }
+
+    // 获取 单日 UV （UV：独立访客）
+    public static String getUVKey(String date) {
+        return "uv:" + date;
+    }
+
+    // 获取 startDate ~ endDate 区间的 UV
+    public static String getUVKey(String startDate, String endDate) {
+        return "uv:" + startDate + ":" + endDate;
+    }
+
+    // 获取单日活跃用户
+    public static String getDAUKey(String date) {
+        return "dau:" + date;
+    }
+
+    // 获取 startDate ~ endDate 区间的 活跃用户
+    public static String getDAUKey(String startDate, String endDate) {
+        return "dau:" + startDate + ":" + endDate;
+    }
 }
