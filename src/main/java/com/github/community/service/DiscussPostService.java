@@ -47,4 +47,12 @@ public class DiscussPostService {
     public int updateDiscussPostCommentCount(Integer id, int commentCount) {
         return discussPostDao.updateDiscussPostCommentCount(id, commentCount);
     }
+
+    public int updateDiscussPostType(int id, int type) {
+        return discussPostDao.updateDiscussPostType(id, type);
+    }
+
+    public int updateDiscussPostStatus(int id, int status) {
+        return discussPostDao.updateDiscussPostStatus(id, status);
+    }
 }

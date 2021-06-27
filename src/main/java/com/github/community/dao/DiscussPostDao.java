@@ -23,4 +23,10 @@ public interface DiscussPostDao {
     int updateDiscussPostCommentCount(Integer id,int commentCount);
 
     List<DiscussPost> findAll();
+
+    // 置顶：修改帖子类型
+    int updateDiscussPostType(int id,int type);
+
+    // 加精，删除：修改帖子状态
+    int updateDiscussPostStatus(int id,int status);
 }

@@ -94,6 +94,11 @@ public interface Constant {
     String TOPIC_PUBLISH = "publish";
 
     /**
+     * 主题：删帖
+     */
+    String TOPIC_DELETE = "delete";
+
+    /**
      * 系统用户的 ID
      */
     int SYSTEM_USER_ID = 1;
@@ -112,4 +117,29 @@ public interface Constant {
      * 权限：版主
      */
     String AUTHORITY_MODERATOR = "moderator";
+
+    /**
+     * 帖子类型：0 普通帖子
+     */
+    int DISCUSS_TYPE_NORMAL = 0;
+
+    /**
+     * 帖子类型：1 置顶帖子
+     */
+    int DISCUSS_TYPE_TOP = 1;
+
+    /**
+     * 帖子状态：0 正常
+     */
+    int DISCUSS_STATUS_NORMAL = 0;
+
+    /**
+     * 帖子状态：1 加精
+     */
+    int DISCUSS_STATUS_WONDERFUL = 1;
+
+    /**
+     * 帖子状态：2 删除
+     */
+    int DISCUSS_STATUS_DELETE = 2;
 }

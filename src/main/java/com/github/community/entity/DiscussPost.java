@@ -33,7 +33,7 @@ public class DiscussPost {
     private Integer type;// 0-普通 1-置顶
 
     @Field(type = FieldType.Integer)
-    private Integer status;// 0-正常,1-精华,2-拉黑
+    private Integer status;// 0-正常,1-精华,2-拉黑(删除)
 
     @Field(type = FieldType.Date)
     private Date createTime;

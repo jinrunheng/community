@@ -33,7 +33,7 @@ public class EventConsumer implements Constant {
     @Autowired
     private MessageService messageService;
 
-    // consume 发帖事件
+    // 发帖事件
     @KafkaListener(topics = {TOPIC_PUBLISH})
     public void handlePublishMessage(ConsumerRecord record) {
         if (record == null || record.value() == null) {
@@ -47,6 +47,21 @@ public class EventConsumer implements Constant {
         }
         DiscussPost post = discussPostService.getDiscussPostById(event.getEntityId());
         elasticsearchService.saveDiscussPost(post);
+    }
+
+    // 删帖事件
+    @KafkaListener(topics = {TOPIC_DELETE})
+    public void handleDeleteMessage(ConsumerRecord record) {
+        if (record == null || record.value() == null) {
+            logger.error("消息内容为空");
+            return;
+        }
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            logger.error("消息格式错误");
+            return;
+        }
+        elasticsearchService.deleteDiscussPost(event.getEntityId());
     }
 
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
