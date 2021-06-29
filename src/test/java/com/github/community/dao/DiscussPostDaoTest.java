@@ -21,7 +21,7 @@ class DiscussPostDaoTest {
 
     @Test
     public void testDiscussPost() {
-        List<DiscussPost> discussPosts = discussPostDao.findDiscussPosts(null, 0, 10);
+        List<DiscussPost> discussPosts = discussPostDao.findDiscussPosts(null, 0, 10,0);
         Assertions.assertEquals(discussPosts.size(), 10);
     }
 

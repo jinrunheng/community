@@ -94,7 +94,7 @@ public class DiscussPostController implements Constant {
         page.setPath("/discuss/all/" + userId);
         page.setRows(discussPostCount);
 
-        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(userId, page.getOffset(), page.getLimit());
+        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(userId, page.getOffset(), page.getLimit(), 0);
         List<Map<String, Object>> posts = new ArrayList<>();
         if (!Objects.isNull(discussPosts)) {
             for (DiscussPost discussPost : discussPosts) {

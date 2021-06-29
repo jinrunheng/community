@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,12 +32,12 @@ public class IndexController implements Constant {
     private LikeService likeService;
 
     @GetMapping("/index")
-    public String getIndex(Model model, Page page) {
+    public String getIndex(Model model, Page page, @RequestParam(name = "orderMode", defaultValue = "0") int orderMode) {
         page.setRows(discussPostService.getDiscussPostCount(null));
-        page.setPath("/index");
+        page.setPath("/index?orderMode=" + orderMode);
 
         // 前十条数据显示到首页
-        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(null, page.getOffset(), page.getLimit());
+        List<DiscussPost> discussPosts = discussPostService.getDiscussPosts(null, page.getOffset(), page.getLimit(), orderMode);
         List<Map<String, Object>> list = new ArrayList<>();
         if (discussPosts != null) {
             for (DiscussPost discussPost : discussPosts) {
@@ -51,6 +52,7 @@ public class IndexController implements Constant {
         }
         model.addAttribute("list", list);
         model.addAttribute("page", page);
+        model.addAttribute("orderMode", orderMode);
         return "/index";
     }
 

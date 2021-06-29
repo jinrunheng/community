@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface DiscussPostDao {
-    List<DiscussPost> findDiscussPosts(@Nullable Integer userId, Integer offset, Integer limit);
+    List<DiscussPost> findDiscussPosts(@Nullable Integer userId, Integer offset, Integer limit,int orderMode);
 
     // @Param 注解用于给参数取别名
     // 如果只有一个参数，并且在动态sql中(<if>)使用，则必须取一个别名

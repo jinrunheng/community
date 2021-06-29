@@ -17,8 +17,8 @@ public class DiscussPostService {
     @Autowired
     private TrieFilter trieFilter;
 
-    public List<DiscussPost> getDiscussPosts(Integer userId, Integer offset, Integer limit) {
-        return discussPostDao.findDiscussPosts(userId, offset, limit);
+    public List<DiscussPost> getDiscussPosts(Integer userId, Integer offset, Integer limit, int orderMode) {
+        return discussPostDao.findDiscussPosts(userId, offset, limit, orderMode);
     }
 
     public int getDiscussPostCount(Integer userId) {
