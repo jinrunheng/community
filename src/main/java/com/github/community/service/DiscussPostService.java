@@ -55,4 +55,8 @@ public class DiscussPostService {
     public int updateDiscussPostStatus(int id, int status) {
         return discussPostDao.updateDiscussPostStatus(id, status);
     }
+
+    public int updateScore(int id, double score) {
+        return discussPostDao.updateScore(id, score);
+    }
 }

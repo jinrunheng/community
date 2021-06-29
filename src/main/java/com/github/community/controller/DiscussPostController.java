@@ -10,7 +10,9 @@ import com.github.community.service.UserService;
 import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
+import com.github.community.util.RedisKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,9 @@ public class DiscussPostController implements Constant {
     @Autowired
     private EventProducer producer;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping("/add")
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -66,6 +71,11 @@ public class DiscussPostController implements Constant {
                 .setEntityType(ENTITY_TYPE_POST)
                 .setEntityId(post.getId());
         producer.fireEvent(event);
+        // 热帖排行处理评分
+        String redisKey = RedisKeyGenerator.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, post.getId());
+
+
         return MyUtil.getJSONString(0, "发布成功");
 
     }
@@ -209,6 +219,9 @@ public class DiscussPostController implements Constant {
                 .setEntityType(ENTITY_TYPE_POST)
                 .setEntityId(id);
         producer.fireEvent(event);
+        // 热帖排行处理加精
+        String redisKey = RedisKeyGenerator.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, id);
         return MyUtil.getJSONString(0);
     }
 

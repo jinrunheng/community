@@ -8,7 +8,9 @@ import com.github.community.service.LikeService;
 import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
+import com.github.community.util.RedisKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +31,13 @@ public class LikeController implements Constant {
     @Autowired
     private EventProducer producer;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping("/like")
     @ResponseBody
     @LoginRequired
-    public String like(int entityType, int entityId, int entityUserId,int postId) {
+    public String like(int entityType, int entityId, int entityUserId, int postId) {
         User user = hostHolder.getUser();
         //  点赞
         likeService.like(user.getId(), entityType, entityId, entityUserId);
@@ -46,17 +51,22 @@ public class LikeController implements Constant {
         map.put("likeStatus", likeStatus);
 
         // 触发点赞事件
-        if(likeStatus == LIKE_STATUS_YES){
+        if (likeStatus == LIKE_STATUS_YES) {
             Event event = new Event()
                     .setTopic(TOPIC_LIKE)
                     .setUserId(user.getId())
                     .setEntityType(entityType)
                     .setEntityId(entityId)
                     .setEntityUserId(entityUserId)
-                    .setData("postId",postId);
+                    .setData("postId", postId);
 
             producer.fireEvent(event);
         }
+        if (entityType == ENTITY_TYPE_POST) {
+            String redisKey = RedisKeyGenerator.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, postId);
+        }
+
 
         return MyUtil.getJSONString(0, null, map);
     }

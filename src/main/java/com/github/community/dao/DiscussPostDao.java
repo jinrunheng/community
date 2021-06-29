@@ -29,4 +29,6 @@ public interface DiscussPostDao {
 
     // 加精，删除：修改帖子状态
     int updateDiscussPostStatus(int id,int status);
+
+    int updateScore(int id,double score);
 }

@@ -64,4 +64,9 @@ public class RedisKeyGenerator {
     public static String getDAUKey(String startDate, String endDate) {
         return "dau:" + startDate + ":" + endDate;
     }
+
+    // 统计帖子分数
+    public static String getPostScoreKey() {
+        return "post:score";
+    }
 }

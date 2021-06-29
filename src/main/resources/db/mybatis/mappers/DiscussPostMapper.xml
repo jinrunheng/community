@@ -57,4 +57,7 @@
     <update id="updateDiscussPostStatus">
         update  discuss_post set status = #{status} where id = #{id}
     </update>
+    <update id="updateScore">
+        update  discuss_post set score = #{score} where id = #{id}
+    </update>
 </mapper>

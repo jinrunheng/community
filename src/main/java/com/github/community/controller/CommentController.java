@@ -9,8 +9,10 @@ import com.github.community.service.CommentService;
 import com.github.community.service.DiscussPostService;
 import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
+import com.github.community.util.RedisKeyGenerator;
 import org.apache.kafka.common.config.TopicConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +38,12 @@ public class CommentController implements Constant {
     @Autowired
     private EventProducer producer;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @PostMapping("/add/{discussPostId}")
     public String addComment(@PathVariable int discussPostId, Comment comment) {
-        if(hostHolder.getUser() == null){
+        if (hostHolder.getUser() == null) {
             // 如果当前用户没有登陆，跳转到登陆页面
             return "redirect:/login";
         }
@@ -70,6 +75,11 @@ public class CommentController implements Constant {
                     .setEntityType(ENTITY_TYPE_POST)
                     .setEntityId(discussPostId);
             producer.fireEvent(event);
+
+            // 热帖排行处理评论
+            String redisKey = RedisKeyGenerator.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, discussPostId);
+
         }
         return "redirect:/discuss/detail/" + discussPostId;
     }
