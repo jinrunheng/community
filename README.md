@@ -17,6 +17,7 @@
 - Kafka
 - Elasticsearch
 - Spring Security(授权认证)
+- quartz
 - ...
 
 ## 模块
@@ -26,9 +27,11 @@
 - 用户个人信息
 - 帖子
 - 消息模块
-- 管理员模块，统计数据
-   
-
+- 管理员模块，统计数据(redis 高级数据结构 HyperLogLog Bitmap)
+- 搜索功能
+- 热帖排行功能
+    - 热帖排行算法：`log(精华分 + 评论数 * 10 + 点赞数 * 2) + (发布时间 - 创立纪元) `  
+    - 使用 quartz 做定时任务计算，测试中计算时间为 5 min 
 ## 使用
 
 - Use docker to start mysql
