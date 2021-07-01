@@ -18,6 +18,7 @@
 - Elasticsearch
 - Spring Security(授权认证)
 - quartz
+- wkhtmltopdf
 - ...
 
 ## 模块
@@ -32,6 +33,7 @@
 - 热帖排行功能
     - 热帖排行算法：`log(精华分(75) + 评论数 * 10 + 点赞数 * 2) + (发布时间 - 创立纪元) `  
     - 使用 quartz 做定时任务计算，测试中计算时间为 5 min 
+- 生成长图    
 ## 使用
 
 - Use docker to start mysql
