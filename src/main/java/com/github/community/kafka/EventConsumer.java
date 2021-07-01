@@ -12,9 +12,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +34,12 @@ public class EventConsumer implements Constant {
 
     @Autowired
     private MessageService messageService;
+
+    @Value("${wk.image.storage}")
+    private String wkImageStorage;
+
+    @Value("${wk.image.command}")
+    private String wkImageCommand;
 
     // 发帖,更新帖子事件
     @KafkaListener(topics = {TOPIC_PUBLISH})
@@ -102,6 +110,37 @@ public class EventConsumer implements Constant {
         }
         message.setContent(JSONObject.toJSONString(content));
         messageService.addMessage(message);
+    }
+
+    // 消费分享事件
+    @KafkaListener(topics = TOPIC_SHARE)
+    public boolean handleShareMessage(ConsumerRecord record) {
+        if (record == null || record.value() == null) {
+            logger.error("消息内容为空");
+            return false;
+        }
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            logger.error("消息格式错误");
+            return false;
+        }
+
+        String htmlUrl = (String) event.getData().get("htmlUrl");
+        String fileName = (String) event.getData().get("fileName");
+        String suffix = (String) event.getData().get("suffix");
+
+        String command = wkImageCommand + " --quality 75 " + htmlUrl + " " + wkImageStorage + fileName + suffix;
+        try {
+            Process process = Runtime.getRuntime().exec(command);
+            if (process.waitFor() == 0) {
+                logger.info("生成长图成功：" + command);
+                return true;
+            }
+            return false;
+        } catch (IOException | InterruptedException e) {
+            logger.error("生成长图失败：" + e.getStackTrace());
+        }
+        return false;
     }
 
 
