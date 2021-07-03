@@ -8,6 +8,9 @@ import com.github.community.service.UserService;
 import com.github.community.util.Constant;
 import com.github.community.util.HostHolder;
 import com.github.community.util.MyUtil;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.bcel.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +41,17 @@ public class UserController implements Constant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
+    @Value("${qiniu.key.access}")
+    private String accessKey;
+
+    @Value("${qiniu.key.secret}")
+    private String secretKey;
+
+    @Value("${qiniu.bucket.header.name}")
+    private String headerBucketName;
+
+    @Value("${qiniu.bucket.header.url}")
+    private String headerBucketUrl;
 
     @Autowired
     private HostHolder hostHolder;
@@ -56,14 +67,43 @@ public class UserController implements Constant {
 
     @GetMapping("/setting")
     @LoginRequired
-    public String getUserSettingPage() {
+    public String getUserSettingPage(Model model) {
+        // 上传文件的名称
+        String fileName = MyUtil.generateUUID();
+
+        // 设置响应信息
+        StringMap policy = new StringMap();
+        policy.put("returnBody", MyUtil.getJSONString(0));
+
+        // 生成上传凭证
+        Auth auth = Auth.create(accessKey, secretKey);
+        String uploadToken = auth.uploadToken(headerBucketName, fileName, 3600, policy);
+        model.addAttribute("uploadToken", uploadToken);
+        model.addAttribute("fileName", fileName);
+
         return "/site/setting";
     }
 
+    // 更新头像路径
+    @PostMapping("/header/url")
+    @ResponseBody
+    public String updateHeaderUrl(String fileName) {
+        if (StringUtils.isBlank(fileName)) {
+            return MyUtil.getJSONString(1, "文件名不能为空");
+        }
+
+        String url = headerBucketUrl + "/" + fileName;
+        userService.updateUserHeader(hostHolder.getUser().getId(), url);
+        return MyUtil.getJSONString(0);
+    }
+
+
+    // 废弃 ... ...
     // 上传头像步骤
     // 通过 MultipartFile 处理上传文件
     // 对上传的图片进行格式判断，如果不符合要求，则丢出 RuntimeException 异常
     // 对上传的图片进行重命名
+    @Deprecated
     @LoginRequired
     @PostMapping("/upload")
     public String upLoadUserAvatar(MultipartFile multipartFile, Model model) {
@@ -94,6 +134,8 @@ public class UserController implements Constant {
         return "redirect:/index";
     }
 
+    // 废弃... ...
+    @Deprecated
     @GetMapping("/header/{fileName}")
     public void getUserAvatar(@PathVariable String fileName, HttpServletResponse response) {
         // 服务器图片的存放路径
@@ -157,7 +199,7 @@ public class UserController implements Constant {
         // 如果已关注 则显示 "已关注"
         boolean hasFollowed = false;
         if (hostHolder.getUser() != null) {
-            model.addAttribute("loginUser",hostHolder.getUser());
+            model.addAttribute("loginUser", hostHolder.getUser());
             hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
         }
         model.addAttribute("hasFollowed", hasFollowed);
