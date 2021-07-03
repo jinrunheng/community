@@ -1,6 +1,7 @@
 package com.github.community.config;
 
 import com.github.community.quartz.PostScoreRefreshJob;
+import com.github.community.quartz.WKImageDeleteJob;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,32 @@ public class QuartzConfig {
         factoryBean.setGroup("communityTriggerGroup");
         // 执行任务的频率 5min 测试，实际项目不需要这么短的时间 几个小时几即可
         factoryBean.setRepeatInterval(1000 * 60 * 5);
+        // 指定 JobDataMap 存储 Job 的状态
+        factoryBean.setJobDataMap(new JobDataMap());
+        return factoryBean;
+    }
+
+    // 删除 WK 图片任务
+    @Bean
+    public JobDetailFactoryBean wkImageDeleteJobDetail() {
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(WKImageDeleteJob.class);
+        factoryBean.setName("wkImageDeleteJob");
+        factoryBean.setGroup("communityJobGroup");
+        factoryBean.setDurability(true);
+        factoryBean.setRequestsRecovery(true);
+        return factoryBean;
+    }
+
+    // 删除 WK 图片触发器
+    @Bean
+    public SimpleTriggerFactoryBean wkImageDeleteTrigger(JobDetail wkImageDeleteJobDetail) {
+        SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+        factoryBean.setJobDetail(wkImageDeleteJobDetail);
+        factoryBean.setName("wkImageDeleteTrigger");
+        factoryBean.setGroup("communityTriggerGroup");
+        // 四分钟执行一次删除图片的任务
+        factoryBean.setRepeatInterval(1000 * 60 * 4);
         // 指定 JobDataMap 存储 Job 的状态
         factoryBean.setJobDataMap(new JobDataMap());
         return factoryBean;

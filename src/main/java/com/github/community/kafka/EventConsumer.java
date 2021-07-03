@@ -26,6 +26,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
+import javax.management.relation.RoleUnresolved;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -166,12 +167,13 @@ public class EventConsumer implements Constant {
             logger.error("生成长图失败：" + e.getStackTrace());
         }
 
-        //  启用定时器，监控图片，一旦生成，则上传到七牛云服务器
+        // 启用定时器，监控图片，一旦生成，则上传到七牛云服务器
         UploadTask task = new UploadTask(fileName, suffix);
         Future future = taskScheduler.scheduleAtFixedRate(task, 500);
         task.setFuture(future);
         // return false;
     }
+
 
     class UploadTask implements Runnable {
 
