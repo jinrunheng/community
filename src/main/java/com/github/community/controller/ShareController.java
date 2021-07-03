@@ -37,6 +37,9 @@ public class ShareController implements Constant {
     @Value("${wk.image.storage}")
     private String wkImageStorage;
 
+    @Value("${qiniu.bucket.share.url}")
+    private String shareBucketUrl;
+
     @GetMapping("/share")
     @ResponseBody
     public String share(String htmlUrl) {
@@ -53,13 +56,15 @@ public class ShareController implements Constant {
         eventProducer.fireEvent(event);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("shareUrl", domain + contextPath + "/share/image/" + fileName);
-
+        // map.put("shareUrl", domain + contextPath + "/share/image/" + fileName);
+        map.put("shareUrl", shareBucketUrl + "/" + fileName);
         // 返回访问路径
         return MyUtil.getJSONString(0, null, map);
     }
 
     // 获取长图
+    // 废弃... ...
+    @Deprecated
     @GetMapping("/share/image/{fileName}")
     public void getShareImage(@PathVariable String fileName, HttpServletResponse response) {
         if (StringUtils.isBlank(fileName)) {
@@ -72,8 +77,8 @@ public class ShareController implements Constant {
             FileInputStream fis = new FileInputStream(file);
             byte[] bytes = new byte[1024];
             int b = 0;
-            while((b = fis.read(bytes)) != -1){
-                os.write(bytes,0,b);
+            while ((b = fis.read(bytes)) != -1) {
+                os.write(bytes, 0, b);
             }
         } catch (IOException e) {
             log.error("获取长图失败：" + e.getMessage());
