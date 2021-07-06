@@ -19,6 +19,7 @@
 - Spring Security(授权认证)
 - quartz
 - wkhtmltopdf
+- Caffeine Cache
 - ...
 
 ## 模块
@@ -33,7 +34,28 @@
 - 热帖排行功能
     - 热帖排行算法：`log(精华分(75) + 评论数 * 10 + 点赞数 * 2) + (发布时间 - 创立纪元) `  
     - 使用 quartz 做定时任务计算，测试中计算时间为 5 min 
-- 生成长图    
+- 生成长图
+
+## 项目亮点
+
+- 前缀树过滤敏感词
+- Caffeine Cache 对首页热门帖子查询优化
+
+使用 Jmeter （70个线程）进行抗压测试：
+
+优化之前：吞吐量为 17.5/sec
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gs7opwq1d0j31rw0oq0yd.jpg" alt="image-20210707001552584" style="zoom:50%;" align="left"/>
+
+
+
+优化过后：吞吐量达到 111.8/sec
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gs7ozveadjj31ro0ow0yc.jpg" alt="image-20210707002229751" style="zoom:50%;" />
+
+
+
+    
 ## 使用
 
 - Use docker to start mysql
